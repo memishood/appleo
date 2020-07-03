@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/pickFragment">
+
+    <fragment
+        android:id="@+id/pickFragment"
+        android:name="tr.com.emrememis.app.leo.ui.pick.PickFragment"
+        android:label="@string/fragment_pick_label"
+        tools:layout="@layout/fragment_pick">
+        <action
+            android:id="@+id/action_pickFragment_to_permissionsFragment"
+            app:destination="@id/permissionsFragment" />
+        <action
+            android:id="@+id/action_pickFragment_to_musicFragment"
+            app:destination="@id/musicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/permissionsFragment"
+        android:name="tr.com.emrememis.app.leo.ui.permissions.PermissionsFragment"
+        android:label="@string/fragment_permissions_label"
+        tools:layout="@layout/fragment_permissions" />
+    <fragment
+        android:id="@+id/musicFragment"
+        android:name="tr.com.emrememis.app.leo.ui.music.MusicFragment"
+        android:label="@string/fragment_music_label"
+        tools:layout="@layout/fragment_music">
+        <action
+            android:id="@+id/action_musicFragment_to_ARCoreFragment"
+            app:destination="@id/ARCoreFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ARCoreFragment"
+        android:name="tr.com.emrememis.app.leo.ui.arcore.ARCoreFragment"
+        android:label="@string/fragment_ar_core_label"
+        tools:layout="@layout/fragment_ar_core">
+        <action
+            android:id="@+id/action_ARCoreFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="tr.com.emrememis.app.leo.ui.result.ResultFragment"
+        android:label="@string/fragment_result_label"
+        tools:layout="@layout/fragment_result" />
+</navigation>

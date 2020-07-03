@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import tr.com.emrememis.app.leo.ui.BaseActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +29,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runOnHandler(action: () -> Unit) {
-        Handler().postDelayed(Runnable(action), time)
+        Handler().postDelayed(Runnable(action),
+            time
+        )
     }
 
     /*
