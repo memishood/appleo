@@ -3,10 +3,10 @@
     <string name="fragment_pick_label">Pick Video</string>
     <string name="fragment_permissions_label">Permissions</string>
     <string name="fragment_music_label">Select Music</string>
-    <string name="fragment_ar_core_label">Select an Effect</string>
     <string name="fragment_result_label">Result</string>
-
-
-    <string name="need_permissions">We need gallery permission for pick your selected videos</string>
+    <string name="fragment_clipart_label">Add Clipart</string>
+    <string name="select_video">Select Video</string>
+    <string name="get_started">Select your perfect video for make better!</string>
+    <string name="need_permissions">We need <b>read</b> &amp; <b>write</b> storage permissions for pick your selected videos</string>
     <string name="action_continue">Continue</string>
 </resources>

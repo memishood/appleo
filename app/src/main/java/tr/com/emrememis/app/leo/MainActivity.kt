@@ -9,7 +9,7 @@ import tr.com.emrememis.app.leo.ui.BaseActivity
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        const val time = 500L
+        const val time = 1000L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         /*
-        * we don't need make anything on this activity currently, so going to base activity after 500 mills
+        * we don't need make anything on this activity currently, so going to base activity after a second
         * */
 
         runOnHandler {

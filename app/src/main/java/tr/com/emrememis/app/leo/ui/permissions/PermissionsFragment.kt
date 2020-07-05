@@ -33,7 +33,8 @@ class PermissionsFragment : Fragment() {
                 arrayOf(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ), READ_EXTERNAL_STORAGE_REQUEST_CODE
+                ),
+                READ_EXTERNAL_STORAGE_REQUEST_CODE
             )
 
         }
@@ -43,7 +44,8 @@ class PermissionsFragment : Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == READ_EXTERNAL_STORAGE_REQUEST_CODE
-            && hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            && hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+            && hasPermissions(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             findNavController().navigateUp()
         }
     }

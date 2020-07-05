@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.BaseActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:id="@+id/toolbar"
         android:layout_width="0dp"

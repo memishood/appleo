@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.permissions.PermissionsFragment"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryDark">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/phone" />
+            app:lottie_fileName="phone.json" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/appCompatTextView2"
@@ -33,6 +33,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/need_permissions"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="19sp"
