@@ -9,4 +9,5 @@
     <string name="get_started">Select your perfect video for make better!</string>
     <string name="need_permissions">We need <b>read</b> &amp; <b>write</b> storage permissions for pick your selected videos</string>
     <string name="action_continue">Continue</string>
+    <string name="skip">SKIP</string>
 </resources>

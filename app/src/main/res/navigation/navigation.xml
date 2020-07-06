@@ -16,7 +16,11 @@
             app:destination="@id/permissionsFragment" />
         <action
             android:id="@+id/action_pickFragment_to_musicFragment"
-            app:destination="@id/musicFragment" />
+            app:destination="@id/musicFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/permissionsFragment"
@@ -29,21 +33,28 @@
         android:label="@string/fragment_music_label"
         tools:layout="@layout/fragment_music">
         <action
-            android:id="@+id/action_musicFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            android:id="@+id/action_musicFragment_to_clipartFragment"
+            app:destination="@id/clipartFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/fragment_fade_enter"
+            app:popExitAnim="@anim/fragment_fade_exit" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"
         android:name="tr.com.emrememis.app.leo.ui.result.ResultFragment"
         android:label="@string/fragment_result_label"
-        tools:layout="@layout/fragment_result" >
-        <action
-            android:id="@+id/action_resultFragment_to_clipartFragment"
-            app:destination="@id/clipartFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_result" />
     <fragment
         android:id="@+id/clipartFragment"
         android:name="tr.com.emrememis.app.leo.ui.clipart.ClipartFragment"
         android:label="@string/fragment_clipart_label"
-        tools:layout="@layout/fragment_clipart" />
+        tools:layout="@layout/fragment_clipart" >
+        <action
+            android:id="@+id/action_clipartFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/fragment_fade_enter" />
+    </fragment>
 </navigation>

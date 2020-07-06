@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_music.*
 import tr.com.emrememis.app.leo.R
 import tr.com.emrememis.app.leo.data.adapters.MusicAdapter
 import tr.com.emrememis.app.leo.data.models.Music
+import tr.com.emrememis.app.leo.util.Utils
 
 class MusicFragment : Fragment(), MusicAdapter.MusicAdapterListener {
 
@@ -32,39 +33,20 @@ class MusicFragment : Fragment(), MusicAdapter.MusicAdapterListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = MusicAdapter.create(this)
-
-        /*
-        * create music and push them to adapter
-        * */
-        val music = Music("Neffex", "Best of Me", R.drawable.neffex, R.raw.bestofme)
-        val music2 = Music("Neffex", "Without You", R.drawable.neffex, R.raw.withoutyou)
-        val music3 = Music("Neffex", "One Shot", R.drawable.neffex, R.raw.oneshot)
-
-        adapter.setItems(listOf(music, music2, music3))
-        adapter.notifyDataSetChanged()
+        adapter.setItems(Utils.musics)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-        * recycler view initialize
-        * */
         recyclerView.adapter = adapter
         val layoutManager = recyclerView.layoutManager as GridLayoutManager
         layoutManager.orientation = RecyclerView.VERTICAL
 
-        /*
-        * close the media player
-        * */
         appCompatImageView4.setOnClickListener {
             slide(appCompatImageView2.layoutParams.height, 0)
             releaseMp()
         }
 
-        /*
-        * play or pause the music
-        * */
         appCompatImageView3.setOnClickListener {
             when (mp?.isPlaying) {
                 true -> {
@@ -79,20 +61,14 @@ class MusicFragment : Fragment(), MusicAdapter.MusicAdapterListener {
         }
     }
 
-    /*
-    * go to result fragment with selected music for merge audio and video
-    * */
     override fun onClicked(music: Music) {
         arguments?.let {
             val path = it.getString("videoPath") ?: return@let
-            val params = bundleOf("videoPath" to path, "music" to music.target)
-            findNavController().navigate(R.id.action_musicFragment_to_resultFragment, params)
+            val params = bundleOf("path" to path, "music" to music.imageId)
+            findNavController().navigate(R.id.action_musicFragment_to_clipartFragment, params)
         }
     }
 
-    /*
-    * play the music
-    * */
     override fun onLongClicked(music: Music) {
 
         slide(0, appCompatImageView2.layoutParams.height)
@@ -105,13 +81,10 @@ class MusicFragment : Fragment(), MusicAdapter.MusicAdapterListener {
 
         releaseMp()
 
-        mp = MediaPlayer.create(context, Uri.parse("android.resource://${context?.packageName}/${music.target}"))
+        mp = MediaPlayer.create(context, Uri.parse("android.resource://${context?.packageName}/${music.imageId}"))
         mp?.start()
     }
 
-    /*
-    * Animation method for media player container
-    * */
     private fun slide(from: Int, to: Int) {
         val animator = ValueAnimator.ofInt(from, to)
         animator.duration = 700

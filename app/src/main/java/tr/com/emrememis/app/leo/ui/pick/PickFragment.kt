@@ -39,6 +39,7 @@ class PickFragment : Fragment() {
 
         data ?: return
         val uri = data.data ?: return
+
         val path = UriToPath.getFilePath(context, uri) ?: return
 
         findNavController().navigate(
@@ -48,9 +49,6 @@ class PickFragment : Fragment() {
 
     }
 
-    /*
-    * check the permissions if not, go to permissions fragment
-    * */
     override fun onResume() {
         super.onResume()
         if (!PermissionsFragment.hasPermissions(context, Manifest.permission.READ_EXTERNAL_STORAGE)

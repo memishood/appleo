@@ -34,9 +34,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    /*
-    * if user click to back button, app will be closed
-    * */
     override fun onBackPressed() {
         finishAffinity()
     }

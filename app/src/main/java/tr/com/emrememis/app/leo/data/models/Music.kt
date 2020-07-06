@@ -4,5 +4,5 @@ data class Music(
     var artist: String,
     var songTitle: String,
     var image: Int,
-    var target: Int
+    var imageId: Int
 )
