@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.arthenica.mobileffmpeg.FFmpeg
 import kotlinx.android.synthetic.main.fragment_result.*
@@ -23,6 +24,10 @@ class ResultFragment : Fragment(), CoroutineScope {
     private val job = Job()
 
     override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
+
+    private val eHandler = CoroutineExceptionHandler { _, error ->
+        runOnUiThread { Toast.makeText(context, error.message ?: "Error", Toast.LENGTH_SHORT).show() }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
             View? = inflater.inflate(R.layout.fragment_result, container, false)
@@ -44,7 +49,7 @@ class ResultFragment : Fragment(), CoroutineScope {
             val music = it.getInt("music")
             val clip = it.getInt("clip", -1)
 
-            launch {
+            launch (eHandler) {
 
                 val audio = FileUtils.musicToFile(context, resources, music)
                 val duration = FileUtils.getFileDuration(video.absolutePath)
@@ -55,7 +60,7 @@ class ResultFragment : Fragment(), CoroutineScope {
                     else -> Utils.cmd(video.absolutePath, audio.absolutePath, FileUtils.clipToFile(context, clip).absolutePath, duration, outputPath)
                 }
 
-                val result = FFmpeg.execute(cmd)
+                FFmpeg.execute(cmd)
 
                 audio.delete()
 
@@ -83,6 +88,10 @@ class ResultFragment : Fragment(), CoroutineScope {
 
         val parent = progressBar2.parent as ViewGroup
         parent.removeView(progressBar2)
+    }
+
+    private fun Fragment.runOnUiThread(action: () -> Unit) {
+        if (isAdded) activity?.runOnUiThread(action)
     }
 
     override fun onDestroy() {
