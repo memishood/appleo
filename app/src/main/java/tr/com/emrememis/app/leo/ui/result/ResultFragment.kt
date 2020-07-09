@@ -2,8 +2,10 @@ package tr.com.emrememis.app.leo.ui.result
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.arthenica.mobileffmpeg.FFmpeg
 import kotlinx.android.synthetic.main.fragment_result.*
@@ -45,9 +47,7 @@ class ResultFragment : Fragment(), CoroutineScope {
             launch {
 
                 val audio = Utils.musicToFile(context, resources, music)
-
                 val duration = Utils.getFileDuration(video.absolutePath)
-
                 val outputPath = "${video.absolutePath}${UUID.randomUUID()}.mp4"
 
                 val cmd = when (clip) {
@@ -55,27 +55,31 @@ class ResultFragment : Fragment(), CoroutineScope {
                     else -> Utils.cmd(video.absolutePath, audio.absolutePath, Utils.clipToFile(context, clip).absolutePath, duration, outputPath)
                 }
 
-                /*
-                * if execute returns no error, result will be 0
-                * */
-                val result = FFmpeg.execute(cmd)
+                FFmpeg.execute(cmd)
 
                 audio.delete()
 
-                withContext(Dispatchers.Main) {
+                val resolver = context?.contentResolver ?: return@launch
 
-                    videoView.setVideoURI(Uri.fromFile(File(outputPath)))
-                    videoView.start()
-                    videoView.setOnCompletionListener { videoView.start() }
+                val uri = Utils.saveOutput(resolver, File(outputPath)) ?: return@launch
 
-                    val parent = progressBar2.parent as ViewGroup
-                    parent.removeView(progressBar2)
-
-                }
+                setUi(uri = uri)
 
             }
+
         }
     }
+
+    //@MainThread
+    private suspend fun setUi(uri: Uri) = withContext(Dispatchers.Main) {
+        videoView.setVideoURI(uri)
+        videoView.start()
+        videoView.setOnCompletionListener { videoView.start() }
+
+        val parent = progressBar2.parent as ViewGroup
+        parent.removeView(progressBar2)
+    }
+
 
     override fun onDestroy() {
         FFmpeg.cancel()

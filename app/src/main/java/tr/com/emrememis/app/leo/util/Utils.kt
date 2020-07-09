@@ -1,9 +1,14 @@
 package tr.com.emrememis.app.leo.util
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.toBitmap
 import tr.com.emrememis.app.leo.R
 import tr.com.emrememis.app.leo.data.models.Clip
@@ -71,6 +76,28 @@ object Utils {
 
         }
 
+    }
+
+    fun saveOutput(resolver: ContentResolver, outputFile: File): Uri? {
+
+        if (!outputFile.exists()) {
+            return null
+        }
+
+        val output = ContentValues()
+        output.put(MediaStore.Video.Media.DISPLAY_NAME, "Leo_" + UUID.randomUUID().toString() + ".mp4")
+
+        val outputUri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, output) ?: return null
+
+        resolver.openFileDescriptor(outputUri, "w")?.use {
+            val fos = FileOutputStream(it.fileDescriptor)
+            fos.write(outputFile.readBytes())
+            fos.close()
+        }
+
+        outputFile.delete()
+
+        return outputUri
     }
 
     fun clipToFile(context: Context?, clip: Int): File {
