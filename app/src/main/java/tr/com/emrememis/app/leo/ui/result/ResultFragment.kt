@@ -5,12 +5,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.arthenica.mobileffmpeg.FFmpeg
 import kotlinx.android.synthetic.main.fragment_result.*
 import kotlinx.coroutines.*
 import tr.com.emrememis.app.leo.R
+import tr.com.emrememis.app.leo.util.FileUtils
 import tr.com.emrememis.app.leo.util.Utils
 import java.io.File
 import java.util.*
@@ -46,22 +46,27 @@ class ResultFragment : Fragment(), CoroutineScope {
 
             launch {
 
-                val audio = Utils.musicToFile(context, resources, music)
-                val duration = Utils.getFileDuration(video.absolutePath)
+                val audio = FileUtils.musicToFile(context, resources, music)
+                val duration = FileUtils.getFileDuration(video.absolutePath)
                 val outputPath = "${video.absolutePath}${UUID.randomUUID()}.mp4"
 
                 val cmd = when (clip) {
                     -1 ->  Utils.cmd(video.absolutePath, audio.absolutePath, duration, outputPath)
-                    else -> Utils.cmd(video.absolutePath, audio.absolutePath, Utils.clipToFile(context, clip).absolutePath, duration, outputPath)
+                    else -> Utils.cmd(video.absolutePath, audio.absolutePath, FileUtils.clipToFile(context, clip).absolutePath, duration, outputPath)
                 }
 
-                FFmpeg.execute(cmd)
+                val result = FFmpeg.execute(cmd)
 
                 audio.delete()
 
                 val resolver = context?.contentResolver ?: return@launch
 
-                val uri = Utils.saveOutput(resolver, File(outputPath)) ?: return@launch
+                val uri = when {
+                    Build.VERSION.SDK_INT >= 29 -> FileUtils.saveOutputWithPending(resolver, File(outputPath))
+                    else -> FileUtils.saveOutput(resolver, File(outputPath))
+                }
+
+                uri ?: return@launch
 
                 setUi(uri = uri)
 
@@ -79,7 +84,6 @@ class ResultFragment : Fragment(), CoroutineScope {
         val parent = progressBar2.parent as ViewGroup
         parent.removeView(progressBar2)
     }
-
 
     override fun onDestroy() {
         FFmpeg.cancel()
